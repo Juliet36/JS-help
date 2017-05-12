@@ -1,0 +1,108 @@
+/*
+combined.css
+Stylesheet for NAME
+
+Juliet Slade - Web Programming Independent Study - Spring 2017
+*/
+body {
+  margin: 0;
+}
+
+/*Buttons*/
+.button {
+  background: lightgray;
+  display: inline;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 6px;
+  position: absolute;
+  text-align: center;
+  width: 100px;
+  display: block;
+}
+.button:hover {
+  background: gray;
+}
+
+#buttons {
+  padding-bottom:40px;
+}
+
+#Button1 {
+  left: 25%;
+  margin-left: -50px;
+}
+
+#Button2 {
+  left: 75%;
+  margin-left: -50px;
+}
+
+#Button3 {
+  left: 43%;
+  width: 50px;
+  margin-left: -25px;
+}
+
+#Button4 {
+  left: 55%;
+  width: 50px;
+  margin-left: -25px;
+}
+
+/*Editors*/
+#editor {
+  margin-bottom: 15px;
+  height: 300px;
+  margin-right: 0%;
+  float: left;
+  width: 50%;
+}
+
+#editor iframe{
+  width: 100%;
+}
+
+#hints {
+  height: 300px;
+  width: 50%;
+  float: left;
+}
+
+.clearfix{
+  clear:both
+}
+
+/*Prompt Panel*/
+#prompt-p {
+  font-style: italic;
+}
+
+#prompt {
+  margin-left: 50%;
+  width: 50%;
+  position: absolute;
+  display: none;
+}
+
+/*Answer Panel*/
+#answer {
+  padding: 5px;
+  margin-top:10px;
+  left: 0%;
+  width: 50%;
+  position: absolute;
+}
+
+#messages {
+  width: 95%;
+  height: 80px;
+  font-family: "Futura";
+  resize: vertical;
+}
+
+/*Options Select*/
+#options {
+  position: absolute;
+  bottom:0%;
+}
