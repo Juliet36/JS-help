@@ -1,21 +1,18 @@
 /*
-js-evaluator.js
-evaluator for NAME
-DESCRIPTION
-FAULTS
+  evaluator for JS-help
+  DESCRIPTION
+  FAULTS
 
-Juliet Slade - Web Programming Independent Study - Spring 2017
+  Juliet Slade - Web Programming Independent Study - Spring 2017
 */
 /*
-Not Implemented
--Scopes
--Not
+  Not Implemented
+  -Not
 */
 
 LIMIT = 10000;
 const G = {
   env: [],
-  conditionVariables: {},
   positionStack: [],
   nodes: {},
   PC: 0,
@@ -24,7 +21,6 @@ const G = {
   result:undefined,
   justBroken: false,
   wait: false,
-  whileCondition: false,
   invalidCounter: 0,
   counter:0,
   logs: []
@@ -32,7 +28,6 @@ const G = {
 
 function resetEval() {
   G.env = [];
-  G.conditionVariables = {};
   G.positionStack = [];
   G.nodes = {};
   G.PC = 0;
@@ -40,24 +35,17 @@ function resetEval() {
   G.body=undefined;
   G.result=undefined;
   G.justBroken = false;
-  G.wait = false; //check on TODO
-  G.whileCondition = false;
   G.invalidCounter = 0;
   G.counter=0;
   G.logs = [];
 }
 
-
-function run(code) {
-  const tokens = esprima.tokenize(code, {loc: true});
-  const parsedCode = esprima.parse(code);
-  resetEval();
-  const result = start(parsedCode.body);
-  //console.log("Result " + JSON.stringify(result));
-  //console.log("World " + JSON.stringify(G.env));
-}
-
-
+/*
+  start -
+  sets up nodes for all functions
+  initializes the currentUUID, the initial environment
+  begins evaluation
+*/
 function start(body) {
   addNode(body);
   G.currentUUID = body.uid;
@@ -80,12 +68,20 @@ function start(body) {
   G.keepGoing = true;
   var res = eval();
   if (G.positionStack.length > 0) {
+    //when execution is finished, there should not be things on the stack still
     //console.log('BAD: stuff still on the stack');
     //console.log(JSON.stringify(G.env));
   }
   return res;
 }
 
+/*
+  eval -
+  continues evaluating as long as G.keepGoing is true and G.counter < LIMIT
+  (the counter accounts for if there's an infinite loop in execution)
+  It's almost certainly in here where my problems are coming from, I've reworked
+  this quite a few times and it may be a weird implementation at this point.
+*/
 function eval() {
   while (G.keepGoing && G.counter < LIMIT) {
     G.counter++;
@@ -128,8 +124,13 @@ function eval() {
   return G.result;
 }
 
-
-
+/*
+  evalParsedJS -
+  evaluates on a statement/expression level
+  If it evaluates something that has a body itself (if/else, while) or references
+  a body (call), it pushes the current position on the stack and moves in to
+  evaluate that body (also updating the currentUUID and body in the G object)
+*/
 function evalParsedJS(input) {
   var type = input.type;
   switch(type) {
@@ -157,9 +158,6 @@ function evalParsedJS(input) {
     case esprima.Syntax.Identifier:
       var value = lookup(input.name, G.env);
       if (value || value === 0 || value === false || value === "" || value === null) {
-        if (G.whileCondition) {
-          G.conditionVariables[input.name] = value;
-        }
         return value;
       } else {
         console.log('could not find: ' +  input.name + "\n");
@@ -251,7 +249,7 @@ function evalParsedJS(input) {
         put(input.left.name, rightResult);
         break;
       } else {
-        //this means the variable hasn't been defined, strict now, don't allow variables without var
+        //the variable hasn't been defined, strict now, don't allow variables without var
         console.log('can not find: ' + input.left.name + ' for assignment');
         return -3;
       }
@@ -394,12 +392,10 @@ function evalParsedJS(input) {
       if (!inBody.body.uid) {
         addNode(inBody.body);//Because it's a BlockStatement (right?)
       }
-      G.whileCondition = true;
       var parsedWhile = evalParsedJS(condition);
       if (typeof parsedWhile === 'object') {
-        parsedWhile = parsedWhile["object"].length;
+        parsedWhile = parsedWhile["object"].length; //the while contains an array.length, I believe
       }
-      G.whileCondition = false;
       if (parsedWhile) {
         pushPosition(inBody.body.uid, whileStatement=true);
         G.body = inBody.body;
@@ -415,9 +411,6 @@ function evalParsedJS(input) {
     case esprima.Syntax.ReturnStatement:
       //In case it is just return and doesn't have an arg
       if (input.argument) {
-        if (hasCall(input.argument)) {
-          G.wait = true;
-        }
         G.sameReturn = true;
         const arg = evalParsedJS(input.argument);
         G.sameReturn = false;
@@ -428,25 +421,7 @@ function evalParsedJS(input) {
   }
 }
 
-//This will take FunctionDeclaration, WhileStatement, IfStatement, ?
-function addNode(node) {
-  const uuid = guid();
-  node.uid = uuid;
-  G.nodes[uuid] = node;
-}
-
-function pushPosition(uuid, whileStatement=false) {
-  var pos = {};
-  var PC = G.PC;
-  if (!whileStatement && G.lastPop !== G.currentUUID) {
-    PC += 1;
-  }
-  pos[G.currentUUID] = PC;
-  pos["keepGoing"] = G.keepGoing;
-  G.positionStack.push(pos);
-  G.currentUUID = uuid;
-}
-
+/* binary expression evaluators - algebraic and boolean */
 function binExpEval(left, right, op) {
   switch (op) {
     case '+':
@@ -481,104 +456,4 @@ function logExpEval(left, right, op) {
     case '||':
       return left || right;
   }
-}
-
-function memberExpHandler(memExpAST, memExpObj) {
-  if (memExpAST.computed) {
-    var pp = memExpObj.parsedProp;
-    var o = memExpObj.object;
-    return o[pp];
-  } else {
-    if (memExpObj.prop) {
-      if (memExpObj.prop === 'length') {
-        return memExpObj.object.length;
-      } else {
-        return -4;
-      }
-    } else {
-      return memExpObj;
-    }
-  }
-}
-
-function popRestore() {
-  var pos = G.positionStack.pop();
-  if (pos === 'call') {
-    pos = G.positionStack.pop();
-  }
-  G.lastPop = Object.keys(pos)[0];
-  if (pos !== 'call') {
-    var uuid = Object.keys(pos)[0];
-    G.currentUUID = uuid;
-    G.PC = pos[uuid];
-    G.body = G.nodes[uuid];
-    G.keepGoing = pos["keepGoing"];
-    return G.body;
-  } else {
-    //shouldn't happen
-  }
-}
-
-function invalidUntilCall(i) {
-  if (G.positionStack[i] === 'call') {
-    G.positionStack.splice(i,1);
-    return G.positionStack;
-  } else {
-    var uuid = Object.keys(G.positionStack[i])[0];
-    var body = G.nodes[uuid];
-    body["invalid"] = true;
-    G.invalidCounter++;
-    return invalidUntilCall(i-1);
-  }
-}
-
-function hasCall(arg) {
-  if (arg.type === esprima.Syntax.CallExpression) {
-   return true;
-  } else if (arg.type === esprima.Syntax.BinaryExpression ||
-  arg.type === esprima.Syntax.LogicalExpression) {
-    var l = hasCall(arg.left);
-    var r = hasCall(arg.right);
-    return l || r;
-  }
-  else {
-  return false;
-  }
-}
-
-/* Scope Functions*/
-function lookup(name, env) {
-  if (env.length === 0) {
-    return false;
-  } else if (name in env[env.length-1]) {
-    return env[env.length-1][name];
-  } else {
-    return lookup(name, env.slice(0, env.length-1));
-  }
-}
-
-function bindVals(new_syms, new_vals) {
-  const new_env = {};
-  for (var i = 0; i < new_syms.length; i++) {
-    new_env[new_syms[i]] = new_vals[i];
-  }
-  G.env.push(new_env);
-}
-
-function put(name, value) {
-  G.env[G.env.length-1][name] = value;
-}
-
-
-/* UUID generator */
-//source: http://stackoverflow.com/questions/105034/create-guid-uuid-in-javascript
-function guid() {
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-
-function s4() {
-  return Math.floor((1 + Math.random()) * 0x10000)
-    .toString(16)
-    .substring(1);
 }

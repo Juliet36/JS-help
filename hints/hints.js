@@ -1,10 +1,9 @@
 /*
-hints-mid.js
-hint generator for NAME
-DESCRIPTION
-FAULTS
+  hint generator for JS-help
+  DESCRIPTION
+  FAULTS
 
-Juliet Slade - Web Programming Independent Study - Spring 2017
+  Juliet Slade - Web Programming Independent Study - Spring 2017
 */
 
 const G1 = {
