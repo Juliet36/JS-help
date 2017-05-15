@@ -1,3 +1,10 @@
+/*
+  Auxiliary hint functions for hint generator of JS-help
+
+  Juliet Slade - Web Programming Independent Study - Spring 2017
+*/
+
+//Each line of the code's body is represented as an object
 function makeObj(text, curly, range, nestedUnder, depth, body) {
   var obj = {};
   obj.text = text;
@@ -24,6 +31,8 @@ function makeObj(text, curly, range, nestedUnder, depth, body) {
   obj.depth = depth;
   return obj;
 }
+
+/* Functions that return positions */
 
 function getElsePos(txt, start) {
   var pos = getClosingPos(txt, start, []);
