@@ -1,16 +1,21 @@
 /*
   evaluator for JS-help
-  DESCRIPTION
-  FAULTS
+
+  takes AST and evaluates, returns result
+
+  TODO:
+    -Implement: not, objects?
+    -Be able to define a variable with no starting value
+    -Catch esprima error and don't attempt to evaluate
+    -Get it to work? Scopes are probably not implemented entirely correctly
+      Also problems probably come up in eval
+      Works with some recursive cases but not others
 
   Juliet Slade - Web Programming Independent Study - Spring 2017
 */
-/*
-  Not Implemented
-  -Not
-*/
 
-LIMIT = 10000;
+
+const LIMIT = 10000;
 const G = {
   env: [],
   positionStack: [],
@@ -41,7 +46,6 @@ function resetEval() {
 }
 
 /*
-  start -
   sets up nodes for all functions
   initializes the currentUUID, the initial environment
   begins evaluation
@@ -76,7 +80,6 @@ function start(body) {
 }
 
 /*
-  eval -
   continues evaluating as long as G.keepGoing is true and G.counter < LIMIT
   (the counter accounts for if there's an infinite loop in execution)
   It's almost certainly in here where my problems are coming from, I've reworked
@@ -125,7 +128,6 @@ function eval() {
 }
 
 /*
-  evalParsedJS -
   evaluates on a statement/expression level
   If it evaluates something that has a body itself (if/else, while) or references
   a body (call), it pushes the current position on the stack and moves in to
@@ -306,7 +308,7 @@ function evalParsedJS(input) {
         } else if (callee === 'isNaN') {
           return isNaN(argVals);
         } else {
-          console.log('Function: ' + callee + 'has not yet been defined');
+          console.log('Function: ' + callee + ' has not yet been defined');
           return -1;
           //function hasn't been defined
         }

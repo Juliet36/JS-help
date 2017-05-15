@@ -1,6 +1,22 @@
 /*
   interactive webpage handlers for JS-help
-  MORE DESCRIPTION
+  functions connecting to buttons on the html page:
+    -Initialize
+    -Run
+    -<=Copy
+    -Copy=>
+    -Next Problem
+
+  handles two modes:
+    -Free Reign
+      * edit and evaluate in the left ace editor
+      * edit and generate hint version of code in the right ace editor
+      * copy code over from each side to the other
+    -Demo
+      * receive prompts for various levels of problems in the prompt area
+      * generate hints in the right ace editor
+      * copy hints over when you want to
+      * edit and evaluate in the left ace editor
 
   Juliet Slade - Web Programming Independent Study - Spring 2017
 */
