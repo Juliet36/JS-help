@@ -1,0 +1,81 @@
+<!--
+HTML for js-hint
+
+Juliet Slade - Web Programming Independent Study - Spring 2017
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>JS-help</title>
+    <link href="combined.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <!--Editors-->
+  <div id="editor">edit code here
+    <iframe></iframe>
+  </div>
+  <div id="hints">hint code here
+  </div>
+  <div class="clearfix"></div>
+  <!--Buttons-->
+  <div id ="buttons">
+    <div class = "button" id = "Button1" onclick="runCode();">Run</div>
+    <div class = "button" id = "Button4" onclick="copyOver(hints, edit);"><=Copy</div>
+    <div class = "button" id = "Button3" onclick="copyOver(edit, hints);">Copy=></div>
+    <div class = "button" id = "Button2" onclick="initializeHint();">Initialize</div>
+  </div>
+  <!--Answer Textarea/Prompt-->
+  <div id="answer-prompt-panel">
+    <div id="answer">
+            <label>
+              <textarea id="messages"  readonly></textarea></label>
+            <br/>
+            <button onclick="clearMessages();">clear</button>
+    </div>
+    <div id="prompt">
+      <p><strong>PROMPT</strong></p>
+      <p id = "prompt-p"></p>
+    </div>
+  </div>
+  <!--Dropdown Options-->
+  <div id = "options">
+    <select id = "windowOptions" onchange="changeWindow();">
+      <option value="free">Free Reign</option>
+      <option value="demo">Demo</option>
+    </select>
+  </div>
+
+  <!-- Scripts -->
+  <!-- Ace editors -->
+  <script src="../ace-builds-master/src-noconflict/ace.js"></script>
+
+  <!-- Esprima -->
+  <!-- TODO: check if there is a local version -->
+  <script src="https://unpkg.com/esprima@~3.1/dist/esprima.js"></script>
+
+  <script> const GLOBAL = {}; </script>
+  <!-- My scripts -->
+  <script src="../evaluator/js-evaluator.js"></script>
+  <script src="../evaluator/evaluator-aux.js"></script>
+  <script src="../hints/hints.js"></script>
+  <script src="../hints/hints-aux.js"></script>
+  <script src="../demo-extras/examples.js"></script>
+  <script src="./buttonHandlers.js"></script>
+
+  <script>
+    //set up ace editors
+    var hints = ace.edit("hints");
+    var edit = ace.edit("editor");
+    GLOBAL.hint = false;
+    hints.setTheme("ace/theme/kuroir");
+    hints.getSession().setMode("ace/mode/javascript");
+    hints.$blockScrolling = Infinity;
+
+    edit.setTheme("ace/theme/monokai");
+    edit.getSession().setMode("ace/mode/javascript");
+    edit.$blockScrolling = Infinity;
+
+  </script>
+
+</body>
+</html>
