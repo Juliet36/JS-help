@@ -1,17 +1,4 @@
 /*
-<<<<<<< HEAD
-buttonHandlers.js
-interactive webpage handlers for NAME
-MORE DESCRIPTION
-
-Juliet Slade - Web Programming Independent Study - Spring 2017
-*/
-
-LEVEL_START = "intermediate";
-MOVE_DOWN_TRIES = 15;
-MOVE_UP_TRIES = 5;
-
-=======
   interactive webpage handlers for JS-help
   functions connecting to buttons on the html page:
     -Initialize
@@ -41,7 +28,6 @@ const levels = ["easy", "intermediate", "hard"];
 
 
 //Connected to "Evaluate" button
->>>>>>> master
 function runCode() {
   const code = edit.getValue();
   const parsedCode = esprima.parse(code);
@@ -59,12 +45,9 @@ function runCode() {
   }
 }
 
-<<<<<<< HEAD
-=======
 //version of evaluate for moving on to the next level
 //doesn't grab code from evaluator, instead takes code that's passed in
 //and just returns the result rather than writing it
->>>>>>> master
 function evaluate(code) {
   const parsedCode = esprima.parse(code);
   resetEval();
@@ -72,11 +55,8 @@ function evaluate(code) {
   return result;
 }
 
-<<<<<<< HEAD
-=======
 //Connected to "Initialize" button
 //takes code in hint element and generates the folded up hint version
->>>>>>> master
 function initializeHint(cd) {
     var code;
     if (cd === undefined) {
@@ -91,41 +71,14 @@ function initializeHint(cd) {
     edit.setValue("");
 }
 
-<<<<<<< HEAD
-function hintButton() {
-  initializeHint();
-}
-
-=======
 //Connected to "Copy=>"/"<=Copy" buttons
->>>>>>> master
 function copyOver(from,to) {
   const hintCode = from.getValue();
   to.setValue(hintCode);
 }
 
-<<<<<<< HEAD
-
-function write(message) {
-    var messageArea = document.getElementById("messages");
-    messageArea.value = messageArea.value + "> " + message + "\n";
-    messageArea.scrollTop = messageArea.scrollHeight;
-}
-
-function clearMessages() {
-  var messageArea = document.getElementById("messages");
-  messageArea.value = "";
-}
-
-function displayPrompt(displayStyle) {
-  var promptElement = document.getElementById("prompt");
-  promptElement.style.display = displayStyle;
-}
-
-=======
 //Connected to the selection element
 //Handles the switch between "Free Reign" and "Demo" modes
->>>>>>> master
 function changeWindow() {
   var option = document.getElementById("windowOptions").value;
   if (option === "free") {
@@ -133,10 +86,6 @@ function changeWindow() {
     hints.setValue("hint code here");
     edit.setValue("edit code here");
     document.getElementById("Button3").style.display= "block";
-<<<<<<< HEAD
-    //document.getElementById("Button3").style.display = "block";
-=======
->>>>>>> master
     document.getElementById("Button2").setAttribute("onclick", "hintButton();");
     document.getElementById("Button2").innerHTML =  "Initialize";
     document.getElementById("Button2").style.background="lightgray";
@@ -153,12 +102,9 @@ function changeWindow() {
   }
 }
 
-<<<<<<< HEAD
-=======
 //Connected to the "Next Problem" button
 //tests the users currently entered code, if it passes the tests, it moves
 //on to the next prompt
->>>>>>> master
 function nextPrompt() {
   if (GLOBAL.problem === undefined) {
     var numProbs = GLOBAL.examples[GLOBAL.level]["loops"].length
@@ -189,11 +135,8 @@ function nextPrompt() {
   }
 }
 
-<<<<<<< HEAD
-=======
 //Runs the tests on the current problem and the user's code in the edit element,
 //returns true if all tests run successfully
->>>>>>> master
 function testAnswer(problem) {
   if (problem.tests === undefined) {
     return true;
@@ -221,10 +164,7 @@ function testAnswer(problem) {
   return correct;
 }
 
-<<<<<<< HEAD
-=======
 //Figures out the next level to move to
->>>>>>> master
 function nextLevel() {
   var levelPos = levels.indexOf(GLOBAL.level);
   var nextLevelPos = levelPos;
@@ -242,9 +182,6 @@ function nextLevel() {
   GLOBAL.level = levels[nextLevelPos];
 }
 
-<<<<<<< HEAD
-const levels = ["easy", "intermediate", "hard"];
-=======
 function displayPrompt(displayStyle) {
   var promptElement = document.getElementById("prompt");
   promptElement.style.display = displayStyle;
@@ -261,4 +198,3 @@ function clearMessages() {
   var messageArea = document.getElementById("messages");
   messageArea.value = "";
 }
->>>>>>> master
