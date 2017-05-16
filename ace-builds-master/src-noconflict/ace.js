@@ -35,6 +35,19 @@
  */
 
  /*
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+ ace.js edited for NAME
+
+ On lines 3954 - 4014, in the FoldHandler, I add a check around the places where
+ it would fold the code (gutter clicks). If the editor is the code editing one
+ (editor.container.id === "editor") then it acts as a normal ace editor. If not,
+ it will not fold and will trigger the hint function
+
+ Juliet Slade - Web Programming Independent Study - Spring 2017
+=======
+>>>>>>> a840a705f35d4cc6b84f800ac770473fb485cf23
    ace.js edited for JS-help
 
    On lines 3954 - 4014, in the FoldHandler, I add a check around the places where
@@ -43,6 +56,10 @@
    it will not fold and will trigger the hint function
 
    Juliet Slade - Web Programming Independent Study - Spring 2017
+<<<<<<< HEAD
+=======
+>>>>>>> master
+>>>>>>> a840a705f35d4cc6b84f800ac770473fb485cf23
  */
 
 (function() {
