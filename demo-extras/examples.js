@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
 examples.js
 Examples for demo portion of NAME
 Defines an object, GLOBAL.examples:
@@ -24,6 +25,32 @@ DEMO_OBJ = {
 }
 
 Juliet Slade - Web Programming Independent Study - Spring 2017
+=======
+  Examples for demo portion of JS-help
+  Defines an object, GLOBAL.examples:
+  {
+    Easy {
+      "loops": [DEMO_OBJ*]
+    },
+    Intermediate {
+      "loops": [DEMO_OBJ*]
+    },
+    Hard {
+      "loops": [DEMO_OBJ*]
+    }
+  }
+  When there are other demo types ("conditionals" for example),
+  these will be added into each level in the same format as "loops".
+
+  DEMO_OBJ = {
+    solution: String representation of code,
+    prompt: String representation of prompt,
+    tests: [{test:String, answer:String|Boolean|Integer}*],
+    hasLogs: Boolean //only a property if solution uses console.log()
+  }
+
+  Juliet Slade - Web Programming Independent Study - Spring 2017
+>>>>>>> master
 */
 
 var COUNTER =

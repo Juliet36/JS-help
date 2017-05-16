@@ -1,4 +1,5 @@
 /*
+<<<<<<< HEAD
 js-evaluator.js
 evaluator for NAME
 DESCRIPTION
@@ -16,6 +17,27 @@ LIMIT = 10000;
 const G = {
   env: [],
   conditionVariables: {},
+=======
+  evaluator for JS-help
+
+  takes AST and evaluates, returns result
+
+  TODO:
+    -Implement: not, objects?
+    -Be able to define a variable with no starting value
+    -Catch esprima error and don't attempt to evaluate
+    -Get it to work? Scopes are probably not implemented entirely correctly
+      Also problems probably come up in eval
+      Works with some recursive cases but not others
+
+  Juliet Slade - Web Programming Independent Study - Spring 2017
+*/
+
+
+const LIMIT = 10000;
+const G = {
+  env: [],
+>>>>>>> master
   positionStack: [],
   nodes: {},
   PC: 0,
@@ -24,7 +46,10 @@ const G = {
   result:undefined,
   justBroken: false,
   wait: false,
+<<<<<<< HEAD
   whileCondition: false,
+=======
+>>>>>>> master
   invalidCounter: 0,
   counter:0,
   logs: []
@@ -32,7 +57,10 @@ const G = {
 
 function resetEval() {
   G.env = [];
+<<<<<<< HEAD
   G.conditionVariables = {};
+=======
+>>>>>>> master
   G.positionStack = [];
   G.nodes = {};
   G.PC = 0;
@@ -40,13 +68,17 @@ function resetEval() {
   G.body=undefined;
   G.result=undefined;
   G.justBroken = false;
+<<<<<<< HEAD
   G.wait = false; //check on TODO
   G.whileCondition = false;
+=======
+>>>>>>> master
   G.invalidCounter = 0;
   G.counter=0;
   G.logs = [];
 }
 
+<<<<<<< HEAD
 
 function run(code) {
   const tokens = esprima.tokenize(code, {loc: true});
@@ -58,6 +90,13 @@ function run(code) {
 }
 
 
+=======
+/*
+  sets up nodes for all functions
+  initializes the currentUUID, the initial environment
+  begins evaluation
+*/
+>>>>>>> master
 function start(body) {
   addNode(body);
   G.currentUUID = body.uid;
@@ -80,12 +119,25 @@ function start(body) {
   G.keepGoing = true;
   var res = eval();
   if (G.positionStack.length > 0) {
+<<<<<<< HEAD
+=======
+    //when execution is finished, there should not be things on the stack still
+>>>>>>> master
     //console.log('BAD: stuff still on the stack');
     //console.log(JSON.stringify(G.env));
   }
   return res;
 }
 
+<<<<<<< HEAD
+=======
+/*
+  continues evaluating as long as G.keepGoing is true and G.counter < LIMIT
+  (the counter accounts for if there's an infinite loop in execution)
+  It's almost certainly in here where my problems are coming from, I've reworked
+  this quite a few times and it may be a weird implementation at this point.
+*/
+>>>>>>> master
 function eval() {
   while (G.keepGoing && G.counter < LIMIT) {
     G.counter++;
@@ -128,8 +180,17 @@ function eval() {
   return G.result;
 }
 
+<<<<<<< HEAD
 
 
+=======
+/*
+  evaluates on a statement/expression level
+  If it evaluates something that has a body itself (if/else, while) or references
+  a body (call), it pushes the current position on the stack and moves in to
+  evaluate that body (also updating the currentUUID and body in the G object)
+*/
+>>>>>>> master
 function evalParsedJS(input) {
   var type = input.type;
   switch(type) {
@@ -157,9 +218,12 @@ function evalParsedJS(input) {
     case esprima.Syntax.Identifier:
       var value = lookup(input.name, G.env);
       if (value || value === 0 || value === false || value === "" || value === null) {
+<<<<<<< HEAD
         if (G.whileCondition) {
           G.conditionVariables[input.name] = value;
         }
+=======
+>>>>>>> master
         return value;
       } else {
         console.log('could not find: ' +  input.name + "\n");
@@ -251,7 +315,11 @@ function evalParsedJS(input) {
         put(input.left.name, rightResult);
         break;
       } else {
+<<<<<<< HEAD
         //this means the variable hasn't been defined, strict now, don't allow variables without var
+=======
+        //the variable hasn't been defined, strict now, don't allow variables without var
+>>>>>>> master
         console.log('can not find: ' + input.left.name + ' for assignment');
         return -3;
       }
@@ -308,7 +376,11 @@ function evalParsedJS(input) {
         } else if (callee === 'isNaN') {
           return isNaN(argVals);
         } else {
+<<<<<<< HEAD
           console.log('Function: ' + callee + 'has not yet been defined');
+=======
+          console.log('Function: ' + callee + ' has not yet been defined');
+>>>>>>> master
           return -1;
           //function hasn't been defined
         }
@@ -394,12 +466,19 @@ function evalParsedJS(input) {
       if (!inBody.body.uid) {
         addNode(inBody.body);//Because it's a BlockStatement (right?)
       }
+<<<<<<< HEAD
       G.whileCondition = true;
       var parsedWhile = evalParsedJS(condition);
       if (typeof parsedWhile === 'object') {
         parsedWhile = parsedWhile["object"].length;
       }
       G.whileCondition = false;
+=======
+      var parsedWhile = evalParsedJS(condition);
+      if (typeof parsedWhile === 'object') {
+        parsedWhile = parsedWhile["object"].length; //the while contains an array.length, I believe
+      }
+>>>>>>> master
       if (parsedWhile) {
         pushPosition(inBody.body.uid, whileStatement=true);
         G.body = inBody.body;
@@ -415,9 +494,12 @@ function evalParsedJS(input) {
     case esprima.Syntax.ReturnStatement:
       //In case it is just return and doesn't have an arg
       if (input.argument) {
+<<<<<<< HEAD
         if (hasCall(input.argument)) {
           G.wait = true;
         }
+=======
+>>>>>>> master
         G.sameReturn = true;
         const arg = evalParsedJS(input.argument);
         G.sameReturn = false;
@@ -428,6 +510,7 @@ function evalParsedJS(input) {
   }
 }
 
+<<<<<<< HEAD
 //This will take FunctionDeclaration, WhileStatement, IfStatement, ?
 function addNode(node) {
   const uuid = guid();
@@ -447,6 +530,9 @@ function pushPosition(uuid, whileStatement=false) {
   G.currentUUID = uuid;
 }
 
+=======
+/* binary expression evaluators - algebraic and boolean */
+>>>>>>> master
 function binExpEval(left, right, op) {
   switch (op) {
     case '+':
@@ -482,6 +568,7 @@ function logExpEval(left, right, op) {
       return left || right;
   }
 }
+<<<<<<< HEAD
 
 function memberExpHandler(memExpAST, memExpObj) {
   if (memExpAST.computed) {
@@ -582,3 +669,5 @@ function s4() {
     .toString(16)
     .substring(1);
 }
+=======
+>>>>>>> master
