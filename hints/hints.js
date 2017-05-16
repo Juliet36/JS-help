@@ -242,7 +242,7 @@ function makeBodyLs(ls, txt, bd, i, j, nestedUnder, depth) {
     j++;
     var prevJ = j-1;
     var nest = makeBodyLs(ls, txt, bd[i].body.body, 0, j, j-1, depth + 1);
-    var o = makeObj('}', {type: "close", closes: J, connectedTo: [prevJ], expanded:false}, {"start":{"row":oj,"column":0},"end":{"row":oj,"column":1}}, nestedUnder, depth); //closing curly
+    var o = makeObj('}', {type: "close", closes: prevJ, connectedTo: [prevJ], expanded:false}, {"start":{"row":oj,"column":0},"end":{"row":oj,"column":1}}, nestedUnder, depth); //closing curly
     nest = nest.concat([o]);
     if (bd.length-1 === i) {
       return nest;
